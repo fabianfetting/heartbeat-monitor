@@ -11,7 +11,15 @@ import React, {
   View
 } from 'react-native';
 
+import Button from 'react-native-button';
+import { NativeModules } from 'react-native';
+let MyToastAndroid = NativeModules.MyToastAndroid;
+
 class HeartbeatMonitor extends Component {
+  _handlePress() {
+    console.log('button clicked')
+    MyToastAndroid.show('Awesomeness!!!', MyToastAndroid.LONG);
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -24,6 +32,11 @@ class HeartbeatMonitor extends Component {
         <Text style={styles.instructions}>
           Shake or press menu button for dev menu
         </Text>
+        <Button
+          style={{color: 'red', margin: 10}}
+          onPress={this._handlePress}>
+          Press Me!
+        </Button>
       </View>
     );
   }
