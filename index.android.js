@@ -8,7 +8,8 @@ import React, {
   Component,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableNativeFeedback
 } from 'react-native';
 
 import Button from 'react-native-button';
@@ -21,6 +22,8 @@ class HeartbeatMonitor extends Component {
     MyToastAndroid.show('Awesomeness!!!', MyToastAndroid.LONG);
   }
   render() {
+    var TouchableElement = TouchableNativeFeedback;
+
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -33,10 +36,17 @@ class HeartbeatMonitor extends Component {
           Shake or press menu button for dev menu
         </Text>
         <Button
-          style={{color: 'red', margin: 10}}
+          style={styles.button}
           onPress={this._handlePress}>
           Press Me!
         </Button>
+        <TouchableElement
+            onPress={() => { this._handlePress() }}
+            background={TouchableNativeFeedback.SelectableBackground()}>
+            <View style={{width: 200, height: 50, backgroundColor: 'red'}}>
+              <Text style={{margin: 15}}>Native Feedback Button</Text>
+            </View>
+        </TouchableElement>
       </View>
     );
   }
@@ -59,6 +69,13 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  button: {
+    color: 'black',
+    margin: 30,
+    padding: 10,
+    backgroundColor: '#dadada',
+    textAlign: 'center'
+  }
 });
 
 AppRegistry.registerComponent('HeartbeatMonitor', () => HeartbeatMonitor);
