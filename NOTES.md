@@ -6,15 +6,17 @@ react-native run-android
 adb uninstall com.heartbeatmonitor
 cd android & gradle :app:installDebug
 adb shell am start -n com.heartbeatmonitor/.MainActivity
+
+adb -s [DEVICE_ID] reverse tcp:8081 tcp:8081
 ```
 
 
 ## Bluetooth Debugging
 
 ```
-adb forward --remove tcp:4444
-adb forward tcp:4444 localabstract:/adb-hub
-adb connect localhost:4444
+adb -s [DEVICE_ID] forward --remove tcp:4444
+adb -s [DEVICE_ID] forward tcp:4444 localabstract:/adb-hub
+adb -s [DEVICE_ID] connect 127.0.0.1:4444
 ```
 
 

@@ -1,14 +1,15 @@
 package com.heartbeatmonitor;
 
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+
 import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
 import android.support.wearable.view.BoxInsetLayout;
-import android.view.View;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.List;
 
 import android.util.Log;
@@ -19,17 +20,17 @@ import com.google.android.gms.wearable.Node;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
-public class MainActivity extends WearableActivity {
+public class MainActivity extends WearableActivity implements SensorEventListener {
 
     private static final String LOG_TAG = "SMARTWATCH";
 
-    private static final SimpleDateFormat AMBIENT_DATE_FORMAT =
-            new SimpleDateFormat("HH:mm", Locale.GERMAN);
-
     private BoxInsetLayout mContainerView;
     private TextView mTextView;
-    private TextView mClockView;
     private GoogleApiClient mGoogleApiClient;
+
+    private Sensor mHeartRateSensor;
+    private SensorManager mSensorManager;
+    private Integer currentValue = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +40,58 @@ public class MainActivity extends WearableActivity {
 
         mContainerView = (BoxInsetLayout) findViewById(R.id.container);
         mTextView = (TextView) findViewById(R.id.text);
-        mClockView = (TextView) findViewById(R.id.clock);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Wearable.API).build();
         mGoogleApiClient.connect();
 
+        mSensorManager = ((SensorManager)getSystemService(SENSOR_SERVICE));
+        mHeartRateSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (mHeartRateSensor != null) {
+            Log.d(LOG_TAG, "HEART RATE SENSOR NAME: " + mHeartRateSensor.getName() + " TYPE: " + mHeartRateSensor.getType());
+            mSensorManager.unregisterListener(this, this.mHeartRateSensor);
+            boolean isRegistered = mSensorManager.registerListener(this, this.mHeartRateSensor, SensorManager.SENSOR_DELAY_UI);
+            Log.d(LOG_TAG, "HEART RATE LISTENER REGISTERED: " + isRegistered);
+        } else {
+            Log.d(LOG_TAG, "NO HEART RATE SENSOR");
+        }
+
         sendMessageToHandheld("Hello World");
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+
+        if(sensorEvent.sensor.getType() == Sensor.TYPE_HEART_RATE && sensorEvent.values.length > 0) {
+
+            for(Float value : sensorEvent.values) {
+
+                int newValue = Math.round(value);
+                //Log.d(LOG_TAG, "#: " + newValue);
+                if(currentValue != newValue) {
+                    currentValue = newValue;
+                    Log.d(LOG_TAG, "NEW VALUE: " + currentValue);
+                    mTextView.setText(currentValue.toString());
+
+                    sendMessageToHandheld(currentValue.toString());
+                }
+
+            }
+
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mSensorManager.unregisterListener(this);
+        Log.d(LOG_TAG, "SENSOR UNREGISTERED");
     }
 
     /**
@@ -97,13 +144,14 @@ public class MainActivity extends WearableActivity {
         if (isAmbient()) {
             mContainerView.setBackgroundColor(getResources().getColor(android.R.color.black));
             mTextView.setTextColor(getResources().getColor(android.R.color.white));
-            mClockView.setVisibility(View.VISIBLE);
-
-            mClockView.setText(AMBIENT_DATE_FORMAT.format(new Date()));
         } else {
             mContainerView.setBackground(null);
             mTextView.setTextColor(getResources().getColor(android.R.color.black));
-            mClockView.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+        Log.d(LOG_TAG, "ACCURACY CHANGED: " + i);
     }
 }
