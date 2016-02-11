@@ -61,7 +61,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             Log.d(LOG_TAG, "NO HEART RATE SENSOR");
         }
 
-        sendMessageToHandheld("Hello World");
+        sendMessageToHandheld("0");
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.heartbeatmonitor;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Arrays;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

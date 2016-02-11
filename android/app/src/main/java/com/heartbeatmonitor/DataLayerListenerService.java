@@ -9,6 +9,11 @@ public class DataLayerListenerService extends WearableListenerService {
 
     private static final String LOG_TAG = "WEARABLE_LISTENER";
 
+    private static WearEventHandler mHandler = null;
+    public static void setHandler(WearEventHandler handler) {
+        mHandler = handler;
+    }
+
     /**
      * Notification that a peer is now reachable by this node
      * @param peer
@@ -31,7 +36,11 @@ public class DataLayerListenerService extends WearableListenerService {
     public void onMessageReceived(MessageEvent messageEvent) {
         super.onMessageReceived(messageEvent);
 
-        Log.d(LOG_TAG, "received a message from wear: " + messageEvent.getPath());
+        String content = messageEvent.getPath();
+
+        Log.d(LOG_TAG, "received a message from wear: " + content);
+        // if a handler is registered, send the value as new message
+        if(mHandler!=null) mHandler.onEvent(content);
     }
 
 

@@ -9,44 +9,52 @@ import React, {
   StyleSheet,
   Text,
   View,
-  TouchableNativeFeedback
+  TouchableNativeFeedback,
+  DeviceEventEmitter
 } from 'react-native';
-
-import Button from 'react-native-button';
-import { NativeModules } from 'react-native';
-let MyToastAndroid = NativeModules.MyToastAndroid;
+import Subscribable from 'Subscribable';
 
 class HeartbeatMonitor extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      msg: '–'
+    };
+  }
+  addListenerOn() {
+    return Subscribable.Mixin.addListenerOn.apply(this, arguments);
+  }
+  componentWillMount() {
+    Subscribable.Mixin.componentWillMount.apply(this, arguments);
+  }
   _handlePress() {
-    console.log('button clicked')
-    MyToastAndroid.show('Awesomeness!!!', MyToastAndroid.LONG);
+    console.log('BUTTON:', 'Hello World!');
+  }
+  _handleHeartRateCange(msg) {
+    console.log('handle heart rate', msg);
+    this.setState({msg});
+  }
+  componentDidMount() {
+      this.addListenerOn(DeviceEventEmitter,
+                         'heartrateChanged',
+                         (msg) => { this._handleHeartRateCange(msg) });
+  }
+  componentWillUnmount() {
+    Subscribable.Mixin.componentWillUnmount.apply(this, arguments);
   }
   render() {
-    var TouchableElement = TouchableNativeFeedback;
-
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
+        <Text style={styles.heartrate}>
+          Wear heartrate: {this.state.msg}
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Shake or press menu button for dev menu
-        </Text>
-        <Button
-          style={styles.button}
-          onPress={this._handlePress}>
-          Press Me!
-        </Button>
-        <TouchableElement
-            onPress={() => { this._handlePress() }}
-            background={TouchableNativeFeedback.SelectableBackground()}>
-            <View style={{width: 200, height: 50, backgroundColor: 'red'}}>
-              <Text style={{margin: 15}}>Native Feedback Button</Text>
-            </View>
-        </TouchableElement>
+        <TouchableNativeFeedback
+          onPress={() => { this._handlePress() }}
+          background={TouchableNativeFeedback.SelectableBackgroundBorderless()}>
+          <View style={styles.buttonView}>
+            <Text style={styles.buttonText}>Hello World!</Text>
+          </View>
+        </TouchableNativeFeedback>
       </View>
     );
   }
@@ -57,24 +65,23 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#F5FCFF'
   },
-  welcome: {
-    fontSize: 20,
+  heartrate: {
+    fontSize: 25,
     textAlign: 'center',
-    margin: 10,
+    margin: 30
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  buttonView: {
+    backgroundColor: '#757575',
+    borderRadius: 10,
+    borderColor: '#000',
+    borderWidth: 2,
+    padding: 15
   },
-  button: {
-    color: 'black',
-    margin: 30,
-    padding: 10,
-    backgroundColor: '#dadada',
-    textAlign: 'center'
+  buttonText: {
+    color: '#fff',
+    fontSize: 25
   }
 });
 
