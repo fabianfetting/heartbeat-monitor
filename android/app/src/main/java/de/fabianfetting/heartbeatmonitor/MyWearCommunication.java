@@ -1,4 +1,4 @@
-package com.heartbeatmonitor;
+package de.fabianfetting.heartbeatmonitor;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;

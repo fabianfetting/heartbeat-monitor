@@ -1,4 +1,4 @@
-package com.heartbeatmonitor;
+package de.fabianfetting.heartbeatmonitor;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;

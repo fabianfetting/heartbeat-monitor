@@ -1,4 +1,4 @@
-package com.heartbeatmonitor;
+package de.fabianfetting.heartbeatmonitor;
 
 import java.util.List;
 import java.util.ArrayList;

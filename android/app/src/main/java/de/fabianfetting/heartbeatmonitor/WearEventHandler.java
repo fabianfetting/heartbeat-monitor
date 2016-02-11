@@ -1,4 +1,4 @@
-package com.heartbeatmonitor;
+package de.fabianfetting.heartbeatmonitor;
 
 import android.util.Log;
 

@@ -1,11 +1,11 @@
-# Initial Build Process
+## Initial Build Process
 
 ```
 set -xg ANDROID_SERIAL "emulator-5554"
 react-native run-android
-adb uninstall com.heartbeatmonitor
+adb uninstall de.fabianfetting.heartbeatmonitor
 cd android & gradle :app:installDebug
-adb shell am start -n com.heartbeatmonitor/.MainActivity
+adb shell am start -n de.fabianfetting.heartbeatmonitor/.MainActivity
 
 adb -s [DEVICE_ID] reverse tcp:8081 tcp:8081
 ```
