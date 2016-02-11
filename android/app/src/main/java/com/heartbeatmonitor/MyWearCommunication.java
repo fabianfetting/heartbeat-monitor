@@ -3,9 +3,9 @@ package com.heartbeatmonitor;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 
-public class MyToastModule extends ReactContextBaseJavaModule {
+public class MyWearCommunication extends ReactContextBaseJavaModule {
 
-    public MyToastModule(ReactApplicationContext reactContext) {
+    public MyWearCommunication(ReactApplicationContext reactContext) {
         super(reactContext);
 
         WearEventHandler mEventHandler = createEventHandler(reactContext);

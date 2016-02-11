@@ -17,7 +17,7 @@ class MyReactPackage implements ReactPackage
     {
         List<NativeModule> modules = new ArrayList<>();
 
-        modules.add(new MyToastModule(reactContext));
+        modules.add(new MyWearCommunication(reactContext));
 
         return modules;
     }
