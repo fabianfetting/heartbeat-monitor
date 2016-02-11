@@ -10,6 +10,7 @@ import android.support.wearable.activity.WearableActivity;
 import android.support.wearable.view.BoxInsetLayout;
 import android.widget.TextView;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import android.util.Log;
@@ -72,10 +73,10 @@ public class MainActivity extends WearableActivity implements SensorEventListene
             for(Float value : sensorEvent.values) {
 
                 int newValue = Math.round(value);
-                //Log.d(LOG_TAG, "#: " + newValue);
+
                 if(currentValue != newValue) {
                     currentValue = newValue;
-                    Log.d(LOG_TAG, "NEW VALUE: " + currentValue);
+
                     mTextView.setText(currentValue.toString());
 
                     sendMessageToHandheld(currentValue.toString());
@@ -103,19 +104,19 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         if (mGoogleApiClient == null)
             return;
 
-        Log.d(LOG_TAG, "SEND MESSAGE TO HANDHELD: " + message);
-
         // use the api client to send the heartbeat value to our handheld
         final PendingResult<NodeApi.GetConnectedNodesResult> nodes = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient);
         nodes.setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
             @Override
             public void onResult(NodeApi.GetConnectedNodesResult result) {
                 final List<Node> nodes = result.getNodes();
-                if (nodes != null) {
-                    for (int i = 0; i < nodes.size(); i++) {
-                        final Node node = nodes.get(i);
-                        Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), message, null);
-                    }
+                final String path = "heartRate";
+
+                for (Node node : nodes) {
+                    Log.d(LOG_TAG, "SEND MESSAGE TO HANDHELD: " + message);
+
+                    byte[] data = message.getBytes(StandardCharsets.UTF_8);
+                    Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), path, data);
                 }
             }
         });

@@ -27,9 +27,6 @@ class HeartbeatMonitor extends Component {
   componentWillMount() {
     Subscribable.Mixin.componentWillMount.apply(this, arguments);
   }
-  _handlePress() {
-    console.log('BUTTON:', 'Hello World!');
-  }
   _handleHeartRateCange(msg) {
     console.log('handle heart rate', msg);
     this.setState({msg});
@@ -46,15 +43,11 @@ class HeartbeatMonitor extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.heartrate}>
-          Wear heartrate: {this.state.msg}
+          heart rate:
         </Text>
-        <TouchableNativeFeedback
-          onPress={() => { this._handlePress() }}
-          background={TouchableNativeFeedback.SelectableBackgroundBorderless()}>
-          <View style={styles.buttonView}>
-            <Text style={styles.buttonText}>Hello World!</Text>
-          </View>
-        </TouchableNativeFeedback>
+        <Text style={styles.heartrateValue}>
+            {this.state.msg}
+        </Text>
       </View>
     );
   }
@@ -70,18 +63,14 @@ const styles = StyleSheet.create({
   heartrate: {
     fontSize: 25,
     textAlign: 'center',
-    margin: 30
+    margin: 30,
+    marginBottom: 0
   },
-  buttonView: {
-    backgroundColor: '#757575',
-    borderRadius: 10,
-    borderColor: '#000',
-    borderWidth: 2,
-    padding: 15
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 25
+  heartrateValue: {
+    fontSize: 100,
+    color: '#941b34',
+    margin: 30,
+    marginTop: 0
   }
 });
 
