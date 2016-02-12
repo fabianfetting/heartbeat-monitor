@@ -56,7 +56,7 @@ public class MainActivity extends WearableActivity implements SensorEventListene
         if (mHeartRateSensor != null) {
             Log.d(LOG_TAG, "HEART RATE SENSOR NAME: " + mHeartRateSensor.getName() + " TYPE: " + mHeartRateSensor.getType());
             mSensorManager.unregisterListener(this, this.mHeartRateSensor);
-            boolean isRegistered = mSensorManager.registerListener(this, this.mHeartRateSensor, SensorManager.SENSOR_DELAY_UI);
+            boolean isRegistered = mSensorManager.registerListener(this, this.mHeartRateSensor, SensorManager.SENSOR_DELAY_FASTEST);
             Log.d(LOG_TAG, "HEART RATE LISTENER REGISTERED: " + isRegistered);
         } else {
             Log.d(LOG_TAG, "NO HEART RATE SENSOR");
