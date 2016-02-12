@@ -5,22 +5,18 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.heartbeatmonitor.MainActivity"
+    tools:context="de.fabianfetting.heartbeatmonitor.MainActivity"
     tools:deviceIds="wear">
 
     <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_world"
-        app:layout_box="all" />
-
-    <TextView
-        android:id="@+id/clock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:textColor="@android:color/white"
-        app:layout_box="all" />
+        android:text="0…"
+        app:layout_box="all"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="100dp"
+        android:textIsSelectable="true" />
 
 </android.support.wearable.view.BoxInsetLayout>

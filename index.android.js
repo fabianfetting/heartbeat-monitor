@@ -8,21 +8,45 @@ import React, {
   Component,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableNativeFeedback,
+  DeviceEventEmitter
 } from 'react-native';
+import Subscribable from 'Subscribable';
 
 class HeartbeatMonitor extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      msg: '–'
+    };
+  }
+  addListenerOn() {
+    return Subscribable.Mixin.addListenerOn.apply(this, arguments);
+  }
+  componentWillMount() {
+    Subscribable.Mixin.componentWillMount.apply(this, arguments);
+  }
+  _handleHeartRateCange(msg) {
+    console.log('handle heart rate', msg);
+    this.setState({msg});
+  }
+  componentDidMount() {
+      this.addListenerOn(DeviceEventEmitter,
+                         'heartrateChanged',
+                         (msg) => { this._handleHeartRateCange(msg) });
+  }
+  componentWillUnmount() {
+    Subscribable.Mixin.componentWillUnmount.apply(this, arguments);
+  }
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
+        <Text style={styles.heartrate}>
+          heart rate:
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Shake or press menu button for dev menu
+        <Text style={styles.heartrateValue}>
+            {this.state.msg}
         </Text>
       </View>
     );
@@ -34,18 +58,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#F5FCFF'
   },
-  welcome: {
-    fontSize: 20,
+  heartrate: {
+    fontSize: 25,
     textAlign: 'center',
-    margin: 10,
+    margin: 30,
+    marginBottom: 0
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  heartrateValue: {
+    fontSize: 100,
+    color: '#941b34',
+    margin: 30,
+    marginTop: 0
+  }
 });
 
 AppRegistry.registerComponent('HeartbeatMonitor', () => HeartbeatMonitor);

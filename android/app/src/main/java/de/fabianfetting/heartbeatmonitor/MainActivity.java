@@ -1,4 +1,4 @@
-package com.heartbeatmonitor;
+package de.fabianfetting.heartbeatmonitor;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
@@ -34,7 +34,8 @@ public class MainActivity extends ReactActivity {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-        new MainReactPackage()
+        new MainReactPackage(),
+        new MyReactPackage()
       );
     }
 }
