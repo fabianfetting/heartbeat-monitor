@@ -1,4 +1,4 @@
-[![PyPI](https://img.shields.io/pypi/status/Django.svg?maxAge=2592000)]()
+[![status](https://img.shields.io/badge/status-stable-brightgreen.svg?maxAge=2592000)]()
 
 # Heartbeat Monitor
 
