@@ -25,8 +25,11 @@ adb -s [DEVICE_ID] connect 127.0.0.1:4444
 http://stackoverflow.com/questions/25205888/pairing-android-and-wear-emulators
 
 ```
+# telnet to the smartphone emulator
 telnet localhost 5556
+# remove existing redirect
 # redir del tcp:5601
+# add redirect
 redir add tcp:5601:5601
 ```
 
