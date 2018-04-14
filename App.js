@@ -1,43 +1,33 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
-'use strict';
-import React, {
-  AppRegistry,
-  Component,
+import React, { Component } from 'react';
+import {
+  Platform,
   StyleSheet,
   Text,
   View,
-  TouchableNativeFeedback,
-  DeviceEventEmitter
+  DeviceEventEmitter,
 } from 'react-native';
 import Subscribable from 'Subscribable';
 
-class HeartbeatMonitor extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       msg: '–'
     };
   }
-  addListenerOn() {
-    return Subscribable.Mixin.addListenerOn.apply(this, arguments);
-  }
-  componentWillMount() {
-    Subscribable.Mixin.componentWillMount.apply(this, arguments);
-  }
-  _handleHeartRateCange(msg) {
-    console.log('handle heart rate', msg);
-    this.setState({msg});
-  }
   componentDidMount() {
-      this.addListenerOn(DeviceEventEmitter,
-                         'heartrateChanged',
-                         (msg) => { this._handleHeartRateCange(msg) });
+    Subscribable.Mixin.UNSAFE_componentWillMount.apply(this, arguments);
+    this.addListenerOn(DeviceEventEmitter, 'heartrateChanged', (msg) => { this.handleHeartRateCange(msg) });
   }
   componentWillUnmount() {
     Subscribable.Mixin.componentWillUnmount.apply(this, arguments);
+  }
+  addListenerOn() {
+    return Subscribable.Mixin.addListenerOn.apply(this, arguments);
+  }
+  handleHeartRateCange(msg) {
+    console.log('handle heart rate', msg);
+    this.setState({msg});
   }
   render() {
     return (
@@ -73,5 +63,3 @@ const styles = StyleSheet.create({
     marginTop: 0
   }
 });
-
-AppRegistry.registerComponent('HeartbeatMonitor', () => HeartbeatMonitor);

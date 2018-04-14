@@ -1,5 +1,7 @@
 package de.fabianfetting.heartbeatmonitor;
 
+import android.util.Log;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 
@@ -17,6 +19,7 @@ public class MyWearCommunication extends ReactContextBaseJavaModule {
     }
 
     private void registerEventHandler(WearEventHandler handler) {
+        Log.d("WEAR_EVENT_HANDLER", "Register event handler");
         DataLayerListenerService.setHandler(handler);
     }
 
